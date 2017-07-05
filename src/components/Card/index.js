@@ -57,6 +57,16 @@ export default class Card extends Component {
         return null;
     }
 
+    renderFooter() {
+        const { footer } = this.props;
+
+        if (footer) {
+            return <footer className="slds-card__footer">{footer}</footer>;
+        }
+
+        return null;
+    }
+
     render() {
         const {
             actions,
@@ -74,8 +84,8 @@ export default class Card extends Component {
         return (
             <article className={this.getContainerClass()} style={style}>
                 { this.renderHeader() }
-                { children ? <div className="slds-card__body slds-card__body_inner">{children}</div> : null }
-                { footer ? <footer className="slds-card__footer">{footer}</footer> : null }
+                <div className="slds-card__body slds-card__body_inner">{children}</div>
+                { this.renderFooter() }
             </article>
         );
     }
