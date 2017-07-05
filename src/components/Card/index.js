@@ -9,36 +9,61 @@ export default class Card extends Component {
         return classnames('slds-card', this.props.className);
     }
 
+    renderIcon() {
+        return (
+            <div className="slds-media__figure">
+                <Icon iconName={this.props.iconName} size="small" />
+            </div>
+        );
+    }
+
+    renderTitle() {
+        return (
+            <div className="slds-media__body">
+                <h2>
+                    <span className="slds-text-heading_small">{this.props.title}</span>
+                </h2>
+            </div>
+        );
+    }
+
+    renderHeader() {
+        const { actions, iconName, title } = this.props;
+
+        if (actions || iconName || title) {
+            return (
+                <div className="slds-card__header slds-grid">
+                    <header className="slds-media slds-media_center slds-has-flexi-truncate">
+                        { iconName ? this.renderIcon() : null }
+                        { title ? this.renderTitle() : null }
+                    </header>
+                    { actions ? <div className="slds-no-flex">{actions}</div> : null }
+                </div>
+            );
+        }
+
+        return null;
+    }
+
     render() {
         const {
             actions,
             children,
             footer,
             iconName,
-            iconTitle,
-            style,
             title,
+            style,
         } = this.props;
+
+        if (!actions && !children && !footer && !iconName && !title) {
+            return null;
+        }
 
         return (
             <article className={this.getContainerClass()} style={style}>
-                <div className="slds-card__header slds-grid">
-                    <header className="slds-media slds-media_center slds-has-flexi-truncate">
-                        <div className="slds-media__figure">
-                            <Icon iconName={iconName} title={iconTitle} size="small" />
-                        </div>
-                        <div className="slds-media__body">
-                            <h2>
-                                <span className="slds-text-heading_small">{title}</span>
-                            </h2>
-                        </div>
-                    </header>
-                    <div className="slds-no-flex">
-                        {actions}
-                    </div>
-                </div>
-                <div className="slds-card__body slds-card__body_inner">{children}</div>
-                <footer className="slds-card__footer">{footer}</footer>
+                { this.renderHeader() }
+                { children ? <div className="slds-card__body slds-card__body_inner">{children}</div> : null }
+                { footer ? <footer className="slds-card__footer">{footer}</footer> : null }
             </article>
         );
     }
@@ -59,9 +84,7 @@ Card.propTypes = {
     /** The Lightning Design System name of the icon. Names are written in the
      format '\utility:down\' where 'utility' is the category, and 'down' is the
      specific icon to be displayed. The icon is displayed in the header to the left of the title */
-    iconName: PropTypes.string.isRequired,
+    iconName: PropTypes.string,
     /** The title can include text or another component, and is displayed in the header */
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    /** The title that is showed when a user hover the icon */
-    iconTitle: PropTypes.string,
 };
