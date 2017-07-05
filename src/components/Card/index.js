@@ -10,21 +10,33 @@ export default class Card extends Component {
     }
 
     renderIcon() {
-        return (
-            <div className="slds-media__figure">
-                <Icon iconName={this.props.iconName} size="small" />
-            </div>
-        );
+        const { iconName } = this.props;
+
+        if (iconName) {
+            return (
+                <div className="slds-media__figure">
+                    <Icon iconName={iconName} size="small" />
+                </div>
+            );
+        }
+
+        return null;
     }
 
     renderTitle() {
-        return (
-            <div className="slds-media__body">
-                <h2>
-                    <span className="slds-text-heading_small">{this.props.title}</span>
-                </h2>
-            </div>
-        );
+        const { title } = this.props;
+
+        if (title) {
+            return (
+                <div className="slds-media__body">
+                    <h2>
+                        <span className="slds-text-heading_small">{title}</span>
+                    </h2>
+                </div>
+            );
+        }
+
+        return null;
     }
 
     renderHeader() {
@@ -34,8 +46,8 @@ export default class Card extends Component {
             return (
                 <div className="slds-card__header slds-grid">
                     <header className="slds-media slds-media_center slds-has-flexi-truncate">
-                        { iconName ? this.renderIcon() : null }
-                        { title ? this.renderTitle() : null }
+                        { this.renderIcon() }
+                        { this.renderTitle() }
                     </header>
                     { actions ? <div className="slds-no-flex">{actions}</div> : null }
                 </div>
